@@ -34,12 +34,13 @@ export type RootState = ReturnType<typeof store.getState>;
 // AppDispatch 是 count中action和todo里面action类型的联合类型
 export type AppDispatch = typeof store.dispatch;
 
-export const useAppDiapatch = () => {
-  useDispatch() as AppDispatch;
+export const useAppDispatch = () => {
+  return useDispatch() as AppDispatch;
 };
 export function useAppSelector<T>(selector: (state: RootState) => T) {
   return useSelector(selector);
 }
 /* -------------------------------------------------------------------------- */
 // 到目前为止现在的状态管理还不能做异步操作
+
 export default store;

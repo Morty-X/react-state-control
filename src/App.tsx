@@ -1,7 +1,6 @@
 import './App.css';
 import { type FC } from 'react';
-
-import Bar from './components/Bar';
+import { useAppSelector, useAppDispatch } from './store/index';
 /**
  *这里定义了一个名为App的函数组件。: FC表示App是一个React函数组件，
  *它接受一个空的props对象
@@ -9,10 +8,25 @@ import Bar from './components/Bar';
  * @returns
  */
 const App: FC = () => {
+  const count = useAppSelector((state) => state.count);
+  const dispatch = useAppDispatch();
   return (
     <>
-      <div className=" w-full h-full bg-slate-300 flex justify-center items-center border-[red] border-[10px]">
-        <Bar />
+      <div>App.tsx</div>
+      <div>{count}</div>
+      <div className="flex items-center justify-center gap-4">
+        <button
+          className=" w-[100px] rounded border-[2px] bg-sky-200"
+          onClick={() => dispatch({ type: 'INCREASE' })}
+        >
+          增加
+        </button>
+        <button
+          className=" w-[100px] rounded border-[2px] bg-red-500"
+          onClick={() => dispatch({ type: 'DECREASE' })}
+        >
+          减少
+        </button>
       </div>
     </>
   );

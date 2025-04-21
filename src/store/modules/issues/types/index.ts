@@ -60,6 +60,8 @@ export enum State {
 export enum User {
   Chenshuai2144 = 'chenshuai2144',
 }
+
+
 /* -------------------------------------------------------------------------- */
 export enum ActionType {
   /** 设置issues列表 */

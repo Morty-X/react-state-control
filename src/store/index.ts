@@ -3,7 +3,11 @@
  * react+react-redux+redux(同步) redux-thunk(异步)
  */
 import { rootReducer } from './rootReducer';
-import { legacy_createStore as createStore, applyMiddleware } from 'redux';
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  type Middleware,
+} from 'redux';
 import { TypedUseSelectorHook } from 'react-redux';
 // 中间件的工厂函数
 import { createLogger } from 'redux-logger';
@@ -16,7 +20,7 @@ const isDev = import.meta.env.DEV;
 console.log('🚀 ~ isDev:', isDev);
 
 // 默认配置 开发&生产环境公用的中间件
-const middleware = [thunk];
+const middleware: Middleware[] = [thunk];
 if (isDev) {
   /** 生成日志的中间件 */
   const logger = createLogger();

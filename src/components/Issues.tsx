@@ -1,25 +1,31 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/index';
-import { fetchIssues } from '../api/index';
-import { resetIssues, setIssues } from '../store/modules/issues/actions';
+// import { fetchIssues } from '../api/index';
+import {
+  resetIssues,
+  setIssuesAsync,
+} from '../store/modules/issues/actions';
 export const Issues: FC = () => {
   const issues = useAppSelector((state) => state.issues);
 
   const dispatch = useAppDispatch();
-
   useEffect(() => {
-    fetchIssues()
-      .then((result) => {
-        console.log(result.data.data);
-        // action对象：告诉reducer如何去更新以及使用什么数据更新
-        // dispatch({ type: 'SET_ISSUES', payload: result.data.data });
-        dispatch(setIssues(result.data.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(setIssuesAsync());
   }, []);
+
+  // useEffect(() => {
+  //   fetchIssues()
+  //     .then((result) => {
+  //       console.log(result.data.data);
+  //       // action对象：告诉reducer如何去更新以及使用什么数据更新
+  //       // dispatch({ type: 'SET_ISSUES', payload: result.data.data });
+  //       dispatch(setIssues(result.data.data));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
   return (
     <>
       <div>

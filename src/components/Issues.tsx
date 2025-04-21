@@ -11,6 +11,7 @@ export const Issues: FC = () => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
+    // 异步的类型也不报错了
     dispatch(setIssuesAsync());
   }, []);
 

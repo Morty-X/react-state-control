@@ -7,13 +7,14 @@ import {
   legacy_createStore as createStore,
   applyMiddleware,
   type Middleware,
+  type Action,
 } from 'redux';
 import { TypedUseSelectorHook } from 'react-redux';
 // 中间件的工厂函数
 import { createLogger } from 'redux-logger';
 import { useSelector, useDispatch } from 'react-redux';
 // 提供异步处理功能的中间件 (thunk)
-import { thunk } from 'redux-thunk';
+import { thunk, type ThunkAction, type ThunkDispatch } from 'redux-thunk';
 // ---------------------------------------------------------
 // 判断当前环境是否是开发环境
 const isDev = import.meta.env.DEV;
@@ -36,10 +37,25 @@ const enhancer = applyMiddleware(...middleware);
 export const store = createStore(rootReducer, undefined, enhancer);
 // 用来选择使用那个reducer
 
-// 得到根state类型
+// 根state(状态)类型
 type RootState = ReturnType<typeof store.getState>;
-type AppDispatch = () => typeof store.dispatch;
+
+// 这个类型只满足同步dispatch的场景
+// 在继承了thunk-redux后 我们需要考虑将 AppDispatch
+// 满足多场景(同步，异步)场景
+// 借助thunk-redux提供的工具类型 ThunkDispatch<根状态类型，额外的参数类型(异步函数)，Action类型>
+// type AppDispatch = () => typeof store.dispatch;
+
+export type AppDispatch = ThunkDispatch<RootState, undefined, Action>;
+
+export type AppThunkAction = ThunkAction<
+  Promise<void>,
+  RootState,
+  undefined,
+  Action
+>;
+
 // 函数并未发生变化，只是明确了它的类型
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // 分发处理逻辑
-export const useAppDispatch: AppDispatch = useDispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;

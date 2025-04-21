@@ -1,6 +1,7 @@
 import type { Issues } from './types';
 import { ActionType } from './types';
 import { fetchIssues } from '../../../api/index';
+import { AppDispatch, type AppThunkAction } from '../..';
 /**  action create:action工厂函数 */
 export const setIssues = (payload: Issues[] = []) => {
   return { type: ActionType.SET_ISSUES, payload } as const;
@@ -15,8 +16,8 @@ export const resetIssues = () => {
 // 借助 redux-thunk 中间件定义异步的action 返回的是一个异步函数
 // 该函数第一个参数是dispatch
 export const setIssuesAsync = () => {
-  return async function (dispatch) {
+  return async function (dispatch: AppDispatch) {
     const res = await fetchIssues();
     dispatch(setIssues(res.data.data));
-  };
+  } as AppThunkAction;
 };

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../store/index';
 import { fetchIssues } from '../api/index';
-import { setIssues } from '../store/modules/issues/actions';
+import { resetIssues, setIssues } from '../store/modules/issues/actions';
 export const Issues: FC = () => {
   const issues = useAppSelector((state) => state.issues);
 
@@ -29,6 +29,9 @@ export const Issues: FC = () => {
             return <li key={item.id}>{item.title}</li>;
           })}
         </ul>
+        <button onClick={() => dispatch(resetIssues())}>
+          重置issues列表
+        </button>
       </div>
     </>
   );

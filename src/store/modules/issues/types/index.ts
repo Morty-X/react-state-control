@@ -61,5 +61,12 @@ export enum User {
   Chenshuai2144 = 'chenshuai2144',
 }
 /* -------------------------------------------------------------------------- */
-
-export type Action = { type: 'SET_ISSUES'; payload: Issues[] };
+export enum ActionType {
+  /** 设置issues列表 */
+  SET_ISSUES = 'SET_ISSUES',
+  /** 重置issues列表 */
+  RESET_ISSUES = 'RESET_ISSUES',
+}
+export type Action =
+  | { type: ActionType.SET_ISSUES; payload: Issues[] }
+  | { type: ActionType.RESET_ISSUES };

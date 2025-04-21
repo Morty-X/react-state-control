@@ -1,6 +1,6 @@
-import './App.css';
 import { type FC } from 'react';
 import { useAppSelector, useAppDispatch } from './store/index';
+import { Issues } from './components/Issues';
 /**
  *这里定义了一个名为App的函数组件。: FC表示App是一个React函数组件，
  *它接受一个空的props对象
@@ -28,6 +28,8 @@ const App: FC = () => {
           减少
         </button>
       </div>
+      {/* Issues组件 */}
+      <Issues />
     </>
   );
 };

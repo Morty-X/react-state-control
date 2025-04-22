@@ -31,6 +31,7 @@ export interface checkStatusResType {
   code: number;
   msg: string;
   data: QRStatusData;
+  cookie: string;
 }
 
 export interface QRStatusData {

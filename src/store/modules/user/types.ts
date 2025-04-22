@@ -1,3 +1,3 @@
-export enum UserActionType {
-  SET_USERINFO = 'SET_USERINFO',
+export enum UserActionTypes {
+  SET_USER_INFO = 'SET_USER_INFO',
 }

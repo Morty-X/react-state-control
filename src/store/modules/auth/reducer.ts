@@ -1,22 +1,22 @@
-import { AuthActionType, type AuthAction } from './types/type';
+import { AuthActionTypes } from './types/type';
 import { produce } from 'immer';
+import type { AuthAction } from './actions';
 type AuthState = {
   cookie: string;
 };
-const defaultState: AuthState = {
-  cookie: '',
-};
-// 用户信息模块
-export const authReducer = (
+const defaultState: AuthState = { cookie: '' };
+
+const authReducer = (
   preState: AuthState = defaultState,
   action: AuthAction
 ) => {
   switch (action.type) {
-    case AuthActionType.SET_COOKIE:
+    case AuthActionTypes.SET_COOKIE:
       return produce(preState, (draft) => {
+        // 设置新的cookie状态
         draft.cookie = action.payload;
       });
-    case AuthActionType.REMOVE_COOKIE:
+    case AuthActionTypes.REMOVE_COOKIE:
       return produce(preState, (draft) => {
         draft.cookie = '';
       });
@@ -24,3 +24,5 @@ export const authReducer = (
       return preState;
   }
 };
+
+export { authReducer };

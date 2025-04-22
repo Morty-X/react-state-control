@@ -3,6 +3,7 @@ import QRCode from 'react-qr-code';
 import { checkStatus, loginByQr } from '../api';
 import { useAppDispatch } from '../store/index';
 import { setCookie } from '../store/modules/auth/actions';
+import { fetchUserInfo } from '../store/modules/user/actions';
 export const Login: FC = () => {
   console.log('render...');
 
@@ -55,7 +56,6 @@ export const Login: FC = () => {
           console.log(err);
         });
     }
-
     // useEffect在组件销毁前也可以做一些事，
     // 如果useEffect的回调函数有返回值且返回值是函数
     // 相当于Vue中的 onBeforeDestroyed
@@ -65,30 +65,31 @@ export const Login: FC = () => {
   // 轮巡发送请求获取二维码的状态
 
   useEffect(() => {
-    // 把当前的定时器引用保存，后面会用到clearInterval
-    timer.current = setInterval(() => {
-      checkStatus(qrcode_key.current)
-        .then((result) => {
-          console.log(result.data.data);
-          //  登录成功
-          if (result.data.data.code === 0) {
-            clearInterval(timer.current as number);
-            // 保存登录后的用户数据到store
-            dispatch(setCookie(result.data.cookie));
-            // 设置了cookie后去派发一个获取用户信息的异步请求
-            // 跳转到首页
-            
-          } else if (result.data.data.code === 86038) {
-            clearInterval(timer.current as number);
-            // 无效
-            setIsQrValid(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 3000);
-  }, []);
+    if (qrIsValid) {
+      timer.current = setInterval(() => {
+        checkStatus(qrcode_key.current)
+          .then((res) => {
+            console.log(res.data.data);
+            if (res.data.data.code === 0) {
+              clearInterval(timer.current as number);
+              dispatch(setCookie(res.data.cookie));
+              dispatch(fetchUserInfo());
+            }
+            if (res.data.data.code === 86038) {
+              clearInterval(timer.current as number);
+              setIsQrValid(false);
+            }
+          })
+          .catch((err) => console.log(err));
+      }, 2000);
+    }
+    // 在当前组件销毁前可以做一些事情 如果useEffect的回调函数有返回值且返回值为函数的话
+    return () => {
+      // 相当于 onBeforeDestroy
+      clearInterval(timer.current as number);
+    };
+  }, [qrIsValid]);
+  // useEffect === onMounted watch watchEffect onBeforeDestroy
 
   // 此时依赖于 [] 状态的更新 里面的逻辑才会重新执行
   // qr是不可变数据，在组件第一次被渲染时就被定义，

@@ -1,13 +1,19 @@
-import { UserActionType } from './types';
+import { UserActionTypes } from './types';
+import { getUserInfo, UserInfoData } from '../../../api';
+import { AppDispatch } from '../..';
 
-export const setUserInfo = (userInfo: Record<string, unknown>) => {
+export const setUserInfo = (userInfo: UserInfoData) => {
   return {
-    type: UserActionType.SET_USERINFO,
+    type: UserActionTypes.SET_USER_INFO,
     payload: userInfo,
   };
 };
 
-/** 拉取用户信息请求 */
-export const fetchUserInfo = () => {};
+export const fetchUserInfo = () => {
+  return async function (dispatch: AppDispatch) {
+    const result = await getUserInfo();
+    dispatch(setUserInfo(result.data.data));
+  };
+};
 
 export type UserAction = ReturnType<typeof setUserInfo>;

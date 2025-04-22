@@ -1,8 +1,12 @@
 import { useEffect, type FC, useRef, useState } from 'react';
 import QRCode from 'react-qr-code';
 import { checkStatus, loginByQr } from '../api';
+import { useAppDispatch } from '../store/index';
+import { setCookie } from '../store/modules/auth/actions';
 export const Login: FC = () => {
   console.log('render...');
+
+  const dispatch = useAppDispatch();
 
   // 静态作用域+不可变数据
   // 函数定义的时候 函数内部变量的取值链路就已经决定 不会收到函数被谁执行
@@ -69,9 +73,11 @@ export const Login: FC = () => {
           //  登录成功
           if (result.data.data.code === 0) {
             clearInterval(timer.current as number);
-            // 保存登录后的用户数据
+            // 保存登录后的用户数据到store
+            dispatch(setCookie(result.data.cookie));
+            // 设置了cookie后去派发一个获取用户信息的异步请求
             // 跳转到首页
-            // 
+            
           } else if (result.data.data.code === 86038) {
             clearInterval(timer.current as number);
             // 无效

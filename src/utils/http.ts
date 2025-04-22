@@ -8,9 +8,10 @@ const client = axios.create({
 });
 
 // 登陆成功之后需要将cookie带到服务器，所以需要再请求拦截器中加上cookie
-// client.interceptors.request.use(function (config) {
-//   const auth = store.getState().auth;
-//   // config设置请求头
-//   config.headers.set('cookie', auth.cookie);
-// });
+client.interceptors.request.use(function (config) {
+  const auth = store.getState().auth;
+  // config设置请求头
+  config.headers.set('cookie', auth.cookie);
+  return config;
+});
 export default client;

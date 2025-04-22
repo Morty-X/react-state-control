@@ -15,6 +15,7 @@ import { createLogger } from 'redux-logger';
 import { useSelector, useDispatch } from 'react-redux';
 // 提供异步处理功能的中间件 (thunk)
 import { thunk, type ThunkAction, type ThunkDispatch } from 'redux-thunk';
+import { persistStore } from 'redux-persist';
 // ---------------------------------------------------------
 // 判断当前环境是否是开发环境
 const isDev = import.meta.env.DEV;
@@ -35,7 +36,8 @@ const enhancer = applyMiddleware(...middleware);
 // 它可以传入三个参数，reducer为必传项
 // createReducer(reducer,preloadedState?, enhancer?)
 export const store = createStore(rootReducer, undefined, enhancer);
-// 用来选择使用那个reducer
+
+export const persistor = persistStore(store);
 
 // 根state(状态)类型
 type RootState = ReturnType<typeof store.getState>;

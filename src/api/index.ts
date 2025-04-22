@@ -5,6 +5,17 @@ export const fetchIssues = () => {
   return client.get<IssueResType>('/github/issues');
 };
 
+export interface loginByQrResType {
+  code: number;
+  msg: string;
+  data: Data;
+}
+
+export interface Data {
+  url: string;
+  qrcode_key: string;
+}
+
 /**
  * 通过二维码登录
  *
@@ -12,9 +23,36 @@ export const fetchIssues = () => {
  * 它没有参数，也没有返回值
  */
 export const loginByQr = () => {
-  return client.post('/login/apply/qrcode');
+  return client.post<loginByQrResType>('/login/apply/qrcode');
 };
+/* -------------------------------------------------------------------------- */
 
+export interface checkStatusResType {
+  code: number;
+  msg: string;
+  data: QRStatusData;
+}
+
+export interface QRStatusData {
+  url: string;
+  refresh_token: string;
+  timestamp: number;
+  code: number;
+  message: string;
+}
+
+/**
+ * 检查登录二维码的状态
+ *
+ * 该函数通过发送POST请求到指定的接口，来检查登录二维码的当前状态它用于验证用户是否已经通过扫描二维码登录
+ *
+ * @param key 用于标识二维码的唯一键值，通过该键值来查询二维码的状态
+ * @returns 返回一个Promise对象，解析后包含二维码状态的相关信息
+ */
 export const checkStatus = (key: string) => {
-  return client.post('/login/qrcode', {}, { params: { key } });
+  return client.post<checkStatusResType>(
+    '/login/qrcode',
+    {},
+    { params: { key } }
+  );
 };

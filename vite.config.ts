@@ -9,7 +9,7 @@ export default defineConfig({
     //   // 选项写法
     //   '/api': {
     //     // target: 'https://bili-bili-api-fawn.vercel.app',
-    //     target: 'http://192.168.68.157:3000',
+    //     target: 'http://localhost:3000',
     //     changeOrigin: true,
     //     rewrite: (path) => path.replace(/^\/api/, ''),
     //   },

@@ -2,7 +2,7 @@ import axios from 'axios';
 // 组件外使用store
 import { store } from '../store';
 const client = axios.create({
-  baseURL: 'http://192.168.204.207:3000',
+  baseURL: 'http://localhost:3000',
   timeout: 3000,
 });
 
